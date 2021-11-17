@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import YouTube from "react-youtube";
 import axios from "./axios";
 import "./Row.css";
-import movieTrailer from 'movie-trailer';
-
+import movieTrailer from "movie-trailer";
 
 const base_url = "https://image.tmdb.org/t/p/original/";
 
@@ -15,7 +14,7 @@ function Row({ title, fetchUrl, isLargeRow }) {
     async function fetchData() {
       const request = await axios.get(fetchUrl);
       setMovies(request.data.results);
-      
+
       return request;
     }
     fetchData();
@@ -32,19 +31,16 @@ function Row({ title, fetchUrl, isLargeRow }) {
 
   const handleClick = (movie) => {
     if (trailerUrl) {
-      setTrailerUrl('');
-    }else{
+      setTrailerUrl("");
+    } else {
       movieTrailer(movie?.name || "")
-      .then((url) => {
+        .then((url) => {
+          //  https://www.youtube.com/watch?v=XtMThy8QKqU
+          const urlParams = new URLSearchParams(new URL(url).search);
 
-       // https://www.youtube.com/watch?v=XtMThy8QKqU;
-        const urlParams = URLSearchParams(new URL(url).search);
-      
-
-     setTrailerUrl(urlParams.get('v'));
-      })
-      .catch((error) => console.log(error));
-
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => console.log(error));
     }
   };
 
@@ -53,7 +49,6 @@ function Row({ title, fetchUrl, isLargeRow }) {
       <h2>{title}</h2>
 
       <div className="row__posters">
-       
         {movies.map((movie) => (
           <img
             key={movie.id}
